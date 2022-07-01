@@ -1,0 +1,25 @@
+<h2>Template Form</h2>
+<form>
+  <mat-form-field>
+    <mat-label for="cityInput">City name:</mat-label>
+    <input
+      type="text"
+      matInput
+      [value]="cityName"
+      placeholder="Please type city name"
+      name="cityInput"
+      (input)="changeCity($event)"
+      [matAutocomplete]="auto"
+    />
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+      <mat-option
+        *ngFor="let item of options"
+        [value]="item.name"
+        (click)="clickHandler(item)"
+      >
+        {{ item.name }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <br /><br />
+</form>

@@ -1,0 +1,23 @@
+<h2>Reactive form</h2>
+<form>
+  <mat-form-field>
+    <mat-label>City name:</mat-label>
+    <input
+      type="text"
+      placeholder="Please type city name"
+      matInput
+      [formControl]="cityControl"
+      [matAutocomplete]="auto"
+    />
+
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+      <mat-option
+        *ngFor="let item of options"
+        [value]="item.name"
+        (click)="clickHandler(item)"
+      >
+        {{ item.name }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>

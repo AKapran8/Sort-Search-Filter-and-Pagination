@@ -1,0 +1,98 @@
+<mat-form-field appearance="fill">
+  <mat-label>Toppings</mat-label>
+  <mat-select multiple [(value)]="displayedColumns">
+    <mat-option
+      *ngFor="let column of displayedColumnsDefault"
+      [value]="column"
+      >{{ column }}</mat-option
+    >
+  </mat-select>
+</mat-form-field>
+<br /><br />
+<mat-form-field appearance="standard">
+  <mat-label>Filter</mat-label>
+  <input
+    matInput
+    (input)="applyTotalFilter($event)"
+    placeholder="Ex. Mia"
+    #input
+  />
+</mat-form-field>
+
+<div class="mat-elevation-z8">
+  <table
+    mat-table
+    [dataSource]="displayModifiedData"
+    *ngIf="!isTableShown"
+    matSort
+    multiTemplateDataRows
+    (matSortChange)="sortHandler($event)"
+  >
+    <ng-container
+      matColumnDef="{{ column }}"
+      *ngFor="let column of displayedColumns"
+    >
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        {{ column }}
+        <mat-form-field appearance="standard">
+          <mat-label>Filter</mat-label>
+          <input
+            matInput
+            (input)="applyTotalFilterByKey($event, column)"
+            placeholder="Ex. Mia"
+            #input
+          />
+        </mat-form-field>
+      </th>
+      <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
+    </ng-container>
+    <ng-container matColumnDef="expandedDetail">
+      <td
+        mat-cell
+        *matCellDef="let element"
+        [attr.colspan]="displayedColumns.length"
+      >
+        <div
+          class="example-element-detail"
+          [@detailExpand]="
+            element == expandedElement ? 'expanded' : 'collapsed'
+          "
+        >
+          <div class="example-element-diagram">
+            <div class="example-element-cod">{{ element.cod }}</div>
+            <div class="example-element-name">{{ element.name }}</div>
+            <div class="example-element-id">{{ element.id }}</div>
+            <div class="example-element-population">
+              {{ element.population }}
+            </div>
+          </div>
+          <div class="example-element-description">
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sunt
+            dolore provident laudantium tenetur! Dolor doloremque, cumque maxime
+            quibusdam accusamus id.
+          </div>
+        </div>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr
+      mat-row
+      *matRowDef="let element; columns: displayedColumns"
+      class="example-element-row"
+      [class.example-expanded-row]="expandedElement === element"
+      (click)="expandedElement = expandedElement === element ? null : element"
+    ></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: ['expandedDetail']"
+      class="example-detail-row"
+    ></tr>
+  </table>
+  <mat-paginator
+    [length]="this.modifiedData.length"
+    [pageSizeOptions]="[3, 4, 5]"
+    (page)="onPageChange($event)"
+    aria-label="Select page"
+  >
+  </mat-paginator>
+</div>
